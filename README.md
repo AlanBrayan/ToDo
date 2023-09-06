@@ -1,9 +1,14 @@
-# test-vue
+# Todo by Alan Vue
 
 ## Project setup
 ```
 npm install
 ```
+---Realizado con Sweet Alert ----
+
+npm install -S vue-sweetalert2
+
+
 
 ### Compiles and hot-reloads for development
 ```
