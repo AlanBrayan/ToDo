@@ -4,7 +4,8 @@
 ```
 npm install
 ```
----Realizado con Sweet Alert ----
+
+# Realizado con sweet alert
 
 npm install -S vue-sweetalert2
 
