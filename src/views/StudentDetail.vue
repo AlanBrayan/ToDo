@@ -20,7 +20,7 @@
             class="list-group-item"
           >
             <p class="mb-1">Descripción: {{ task.description }}</p>
-            
+
             <p class="mb-0">Calificación: {{ task.qualification }}</p>
 
             <input
@@ -88,7 +88,9 @@
             type="number"
             v-model="editingTask.qualification"
             placeholder="Calificación"
+            @input="validateQualification"
           />
+
           <button class="btn btn-warning" @click="guardarTareaEditada">
             Guardar
           </button>
@@ -190,6 +192,13 @@ export default {
     cancelarEdicionTarea() {
       this.editingTask = null;
     },
+    
+  validateQualification() {
+    if (this.editingTask.qualification < 0) {
+      // Si la calificación es negativa, establecerla en 0
+      this.editingTask.qualification = 0;
+    }
+  },
     async cambiarEstadoTarea(task) {
       const taskId = task.id;
 
@@ -341,6 +350,12 @@ export default {
             });
         }
       });
+    },
+    validateAge() {
+      if (this.newStudent.age < 0) {
+        // Si la edad es negativa, establecerla en 0
+        this.newStudent.age = 0;
+      }
     },
   },
   mounted() {

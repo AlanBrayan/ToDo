@@ -19,7 +19,6 @@
               class="form-control"
               id="name"
               v-model="newStudent.name"
-              
             />
           </div>
           <div class="form-group">
@@ -29,9 +28,10 @@
               class="form-control"
               id="age"
               v-model="newStudent.age"
-              
+              @input="validateAge"
             />
           </div>
+
           <br />
           <button type="submit" class="btn btn-success">Guardar</button>
         </form>
@@ -99,6 +99,12 @@ export default {
           console.error("Error al crear estudiante:", error);
         });
     },
+    validateAge() {
+    if (this.newStudent.age < 0) {
+      // Si la edad es negativa, establecerla en 0
+      this.newStudent.age = 0;
+    }
+  },
   },
 };
 </script>
