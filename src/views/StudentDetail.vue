@@ -23,6 +23,15 @@
             <p class="mb-0">Estado: {{ task.status.name }}</p>
             <p class="mb-0">Calificación: {{ task.qualification }}</p>
 
+<input
+  type="checkbox"
+  v-model="task.isActive"
+  @change="cambiarEstadoTarea(task)"
+/>
+<span v-if="task.isActive">Activa</span>
+<span v-else>Cancelada</span>
+
+
             <button @click="editarTarea(task)" class="btn btn-primary">
               Editar
             </button>
@@ -182,6 +191,58 @@ export default {
     cancelarEdicionTarea() {
       this.editingTask = null;
     },
+    async cambiarEstadoTarea(task) {
+  const taskId = task.id;
+
+  try {
+    const response = await fetch(
+      `https://tlqrendsvrgefxmmguml.supabase.co/rest/v1/tasks?id=eq.${taskId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: this.auth,
+          apikey: this.apiKey,
+        },
+        body: JSON.stringify({
+          status_id: task.isActive ? 1 : 4, // 1 para activo, 4 para cancelado
+        }),
+      }
+    );
+
+    if (response.ok) {
+      console.log("Estado de la tarea actualizado exitosamente");
+      // Mostrar SweetAlert de éxito
+      Swal.fire({
+        title: "Estado de la Tarea Actualizado",
+        text: `La tarea se ha ${
+          task.isActive ? "activado" : "cancelado"
+        } correctamente.`,
+        icon: "success",
+      });
+    } else {
+      console.error(
+        "Error al actualizar el estado de la tarea:",
+        response.statusText
+      );
+      // Mostrar SweetAlert de error
+      Swal.fire({
+        title: "Error",
+        text: "Hubo un error al actualizar el estado de la tarea.",
+        icon: "error",
+      });
+    }
+  } catch (error) {
+    console.error("Error al actualizar el estado de la tarea:", error);
+    // Mostrar SweetAlert de error
+    Swal.fire({
+      title: "Error",
+      text: "Hubo un error al actualizar el estado de la tarea.",
+      icon: "error",
+    });
+  }
+},
+
     async guardarTareaEditada() {
       const task = this.editingTask;
       const { id, description, statusCopy, qualification } = task;
